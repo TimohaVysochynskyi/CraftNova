@@ -13,7 +13,8 @@ export default function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/auth/login" element={<AuthPage />} />
+            <Route path="/auth/register" element={<AuthPage />} />
           </Route>
         </Routes>
       </Suspense>
