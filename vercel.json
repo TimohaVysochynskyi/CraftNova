@@ -1,6 +1,8 @@
 {
-  "buildCommand": "npm install --omit=optional && npm run build",
-  "installCommand": "npm install --omit=optional",
   "framework": "vite",
+  "env": {
+    "ROLLUP_NO_NATIVE": "1",
+    "NODE_OPTIONS": "--max-old-space-size=4096"
+  },
   "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
