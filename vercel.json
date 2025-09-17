@@ -1,6 +1,0 @@
-{
-  "buildCommand": "npm install --omit=optional && npm run build",
-  "installCommand": "npm install --omit=optional",
-  "framework": "vite",
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
-}
