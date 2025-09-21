@@ -48,10 +48,8 @@ export default function RegisterForm() {
     const resultAction = await dispatch(registerUser(values));
 
     if (registerUser.fulfilled.match(resultAction)) {
-      // Registration successful, navigate to home or dashboard
-      navigate("/");
+      navigate("/dashboard");
     }
-    // Error handling is done automatically in the slice with toast
   };
 
   return (
@@ -64,7 +62,6 @@ export default function RegisterForm() {
         validateOnChange
       >
         {({ errors, touched }) => {
-          // Порядок полів для пріоритету відображення помилок
           const fieldOrder = [
             "nickname",
             "email",
@@ -72,7 +69,6 @@ export default function RegisterForm() {
             "confirmPassword",
           ];
 
-          // Знаходимо першу помилку з торкнутих полів
           const firstError = fieldOrder.find(
             (field) =>
               touched[field as keyof typeof touched] &&
@@ -82,7 +78,9 @@ export default function RegisterForm() {
           return (
             <Form autoComplete="off" className={css.form}>
               <div className={css.group}>
-                <label className={css.label}>Придумайте нікнейм</label>
+                <label className={css.label} htmlFor="nickname">
+                  Придумайте нікнейм
+                </label>
                 <Field
                   name="nickname"
                   type="text"
@@ -94,34 +92,38 @@ export default function RegisterForm() {
               </div>
 
               <div className={css.group}>
-                <label className={css.label}>
+                <label className={css.label} htmlFor="email">
                   Введіть вашу електронну пошту
                 </label>
                 <Field
                   name="email"
                   type="email"
                   className={css.input}
-                  autoComplete="new-password"
+                  autoComplete="off"
                   spellCheck={false}
                   placeholder="player1234@example.com"
                 />
               </div>
 
               <div className={css.group}>
-                <label className={css.label}>Придумайте пароль</label>
+                <label className={css.label} htmlFor="password">
+                  Придумайте пароль
+                </label>
                 <Field
                   name="password"
-                  type="password"
+                  type="new-password"
                   className={css.input}
                   placeholder="********"
                 />
               </div>
 
               <div className={css.group}>
-                <label className={css.label}>Повторіть пароль</label>
+                <label className={css.label} htmlFor="confirmPassword">
+                  Повторіть пароль
+                </label>
                 <Field
                   name="confirmPassword"
-                  type="password"
+                  type="new-password"
                   className={css.input}
                   placeholder="********"
                 />

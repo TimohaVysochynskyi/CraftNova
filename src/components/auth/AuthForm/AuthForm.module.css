@@ -2,6 +2,7 @@
   width: 60%;
   margin: 0 auto;
   height: 86%;
+  max-width: 600px;
 }
 
 .form {
@@ -78,25 +79,89 @@
 }
 
 @media screen and (max-width: 1440px) {
-  .label,
-  .input,
-  .button {
-    font-size: 18px;
+  .label {
+    font-size: 19px;
   }
   .input,
   .button {
-    padding: 16px 18px;
+    font-size: 19px;
+    padding: 17px 19px;
+  }
+  .error {
+    font-size: 15px;
+  }
+  .container {
+    width: 62%;
   }
 }
 
 @media screen and (max-width: 1200px) {
-  .label,
+  .label {
+    font-size: 18px;
+  }
   .input,
   .button {
+    font-size: 18px;
+    padding: 16px 18px;
+  }
+  .errorContainer {
+    min-height: 15px;
+  }
+  .error {
+    font-size: 15px;
+  }
+  .container {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .label {
+    font-size: 17px;
+  }
+  .input,
+  .button {
+    font-size: 17px;
+    padding: 15px 17px;
+  }
+  .container {
+    width: 70%;
+  }
+  .button {
+    width: 55%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .label {
     font-size: 16px;
   }
   .input,
   .button {
+    font-size: 16px;
+    padding: 14px 16px;
+  }
+  .container {
+    width: 75%;
+  }
+  .button {
+    width: 60%;
+  }
+  .form {
+    gap: 10px;
+  }
+  .group {
+    gap: 8px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .label {
+    font-size: 16px;
+  }
+  .input,
+  .button {
+    font-size: 16px;
     padding: 14px 16px;
   }
   .errorContainer {
@@ -104,5 +169,154 @@
   }
   .error {
     font-size: 14px;
+  }
+  .container {
+    width: 90%;
+    height: 90%;
+  }
+  .button {
+    width: 65%;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .label {
+    font-size: 16px;
+  }
+  .input,
+  .button {
+    font-size: 16px;
+    padding: 13px 15px;
+  }
+  .container {
+    width: 85%;
+    height: 92%;
+  }
+  .button {
+    width: 70%;
+  }
+  .form {
+    gap: 9px;
+  }
+  .group {
+    gap: 7px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .label {
+    font-size: 15px;
+  }
+  .input,
+  .button {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+  .container {
+    width: 90%;
+    height: 94%;
+  }
+  .button {
+    width: 75%;
+    min-height: 44px;
+  }
+  .form {
+    gap: 8px;
+  }
+  .group {
+    gap: 6px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .label {
+    font-size: 14px;
+  }
+  .input,
+  .button {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+  .container {
+    width: 92%;
+    height: 95%;
+  }
+  .button {
+    width: 80%;
+    min-height: 44px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .label {
+    font-size: 14px;
+  }
+  .input,
+  .button {
+    font-size: 16px;
+    padding: 12px 12px;
+  }
+  .container {
+    width: 95%;
+    height: 96%;
+  }
+  .button {
+    width: 85%;
+    min-height: 44px;
+  }
+  .form {
+    gap: 6px;
+  }
+  .group {
+    gap: 5px;
+  }
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .container {
+    width: 70%;
+    height: 98%;
+  }
+  .form {
+    gap: 6px;
+  }
+  .group {
+    gap: 4px;
+  }
+  .label {
+    font-size: 14px;
+  }
+  .input,
+  .button {
+    font-size: 16px;
+    padding: 10px 12px;
+  }
+  .button {
+    width: 60%;
+    min-height: 40px;
+  }
+  .errorContainer {
+    min-height: 12px;
+  }
+  .error {
+    font-size: 13px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .container {
+    width: 65%;
+    height: 90%;
+  }
+  .label {
+    font-size: 16px;
+  }
+  .input,
+  .button {
+    font-size: 16px;
+    padding: 12px 15px;
+  }
+  .button {
+    width: 55%;
   }
 }

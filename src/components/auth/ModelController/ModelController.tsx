@@ -4,7 +4,7 @@ import { OrbitControls, useGLTF, PerspectiveCamera } from "@react-three/drei";
 import { Group, Object3D, Vector3, Box3 } from "three";
 import css from "./ModelController.module.css";
 
-function MinecraftModel({ containerHeight }: { containerHeight: number }) {
+function MinecraftModel() {
   const groupRef = useRef<Group>(null);
   const headRef = useRef<Object3D>(null);
   const headPivotRef = useRef<Object3D>(null);
@@ -18,9 +18,6 @@ function MinecraftModel({ containerHeight }: { containerHeight: number }) {
     y: number;
     z: number;
   } | null>(null);
-
-  // Обчислюємо позицію моделі на основі висоти контейнера
-  const modelYPosition = containerHeight > 0 ? -containerHeight * 0.0037 : -3;
 
   // Знаходимо голову, волосся та праву руку персонажа в моделі
   useEffect(() => {
@@ -119,9 +116,8 @@ function MinecraftModel({ containerHeight }: { containerHeight: number }) {
   // Відстеження миші
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      const x = (event.clientX / window.innerWidth) * 2 - 1;
-      const y = -(event.clientY / window.innerHeight) * 2 + 1;
-      setMousePosition({ x, y });
+      // Зберігаємо реальні координати курсору в пікселях
+      setMousePosition({ x: event.clientX, y: event.clientY });
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -132,11 +128,48 @@ function MinecraftModel({ containerHeight }: { containerHeight: number }) {
   useFrame((state) => {
     // Анімація голови
     if (headPivotRef.current) {
-      // Майнкрафт кути обертання
-      const targetYaw = mousePosition.x * Math.PI * 0.4; // ±45 градусів
-      const targetPitch = mousePosition.y * Math.PI * 0.2; // ±13.5 градусів (зменшено у 4 рази)
+      // Отримуємо поточну камеру та canvas
+      const camera = state.camera;
+      const canvas = state.gl.domElement;
 
-      // Плавна інтерполяція обертання навколо шарніра (без будь-яких позиційних зміщень)
+      // Отримуємо позицію canvas відносно вікна
+      const canvasRect = canvas.getBoundingClientRect();
+
+      // Розраховуємо позицію центру голови в screen space
+      const headWorldPos = new Vector3();
+      headPivotRef.current.getWorldPosition(headWorldPos);
+
+      // Проєкціюємо 3D позицію голови на 2D екран
+      const headScreenPos = headWorldPos.clone().project(camera);
+
+      // Переводимо з нормалізованих координат (-1 до 1) у пікселі відносно canvas
+      const headScreenX = ((headScreenPos.x + 1) * canvas.clientWidth) / 2;
+      const headScreenY = ((-headScreenPos.y + 1) * canvas.clientHeight) / 2;
+
+      // Абсолютна позиція голови на екрані
+      const headAbsoluteX = canvasRect.left + headScreenX;
+      const headAbsoluteY = canvasRect.top + headScreenY;
+
+      // Розраховуємо вектор від центру голови до курсору миші
+      const deltaX = mousePosition.x - headAbsoluteX;
+      const deltaY = mousePosition.y - headAbsoluteY;
+
+      // Переводимо в кути (обмежуємо для природного руху)
+      const maxYaw = Math.PI * 0.25; // ±45 градусів
+      const maxPitch = Math.PI * 0.15; // ±27 градусів
+
+      // Нормалізуємо відносно розміру canvas для стабільної чутливості
+      const sensitivity = 0.003; // Налаштовується
+      const targetYaw = Math.max(
+        -maxYaw,
+        Math.min(maxYaw, deltaX * sensitivity)
+      );
+      const targetPitch = Math.max(
+        -maxPitch,
+        Math.min(maxPitch, -deltaY * sensitivity)
+      ); // Мінус для правильного напрямку
+
+      // Плавна інтерполяція обертання навколо шарніра
       headPivotRef.current.rotation.y +=
         (targetYaw - headPivotRef.current.rotation.y) * 0.15;
       headPivotRef.current.rotation.x +=
@@ -207,8 +240,8 @@ function MinecraftModel({ containerHeight }: { containerHeight: number }) {
     <group ref={groupRef} dispose={null}>
       <primitive
         object={scene}
-        scale={2.5}
-        position={[0, modelYPosition, 0]}
+        scale={2}
+        position={[0, -2.5, 0]}
         rotation={[0, Math.PI, 0]}
       />
     </group>
@@ -223,7 +256,7 @@ function ErrorFallback() {
   );
 }
 
-export default function ModelController({ height }: { height: number }) {
+export default function ModelController() {
   const [hasError, setHasError] = useState(false);
 
   if (hasError) {
@@ -231,10 +264,7 @@ export default function ModelController({ height }: { height: number }) {
   }
 
   return (
-    <div
-      className={css.container}
-      style={{ height: height > 0 ? `${height}px` : "100%" }}
-    >
+    <div className={css.container}>
       <Canvas
         className={css.canvas}
         gl={{
@@ -253,7 +283,7 @@ export default function ModelController({ height }: { height: number }) {
           <PerspectiveCamera makeDefault position={[0, 1, 5.5]} fov={60} />
 
           {/* Модель */}
-          <MinecraftModel containerHeight={height} />
+          <MinecraftModel />
 
           {/* Контроли камери */}
           <OrbitControls

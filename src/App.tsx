@@ -5,6 +5,7 @@ import AuthProvider from "./components/auth/AuthProvider";
 
 const HomePage = lazy(() => import("./pages/HomePage/HomePage"));
 const AuthPage = lazy(() => import("./pages/AuthPage/AuthPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage/DashboardPage"));
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/auth/login" element={<AuthPage />} />
             <Route path="/auth/register" element={<AuthPage />} />
           </Route>
