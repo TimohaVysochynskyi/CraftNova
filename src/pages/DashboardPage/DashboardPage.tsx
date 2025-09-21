@@ -54,7 +54,11 @@ export default function DashboardPage() {
             )}
             <div className={css.userField}>
               <span className={css.fieldLabel}>Статус:</span>
-              <span className={`${css.fieldValue} ${user.isOnline ? css.online : css.offline}`}>
+              <span
+                className={`${css.fieldValue} ${
+                  user.isOnline ? css.online : css.offline
+                }`}
+              >
                 {user.isOnline ? "В мережі" : "Не в мережі"}
               </span>
             </div>
@@ -64,7 +68,8 @@ export default function DashboardPage() {
         <div className={css.welcomeCard}>
           <h3 className={css.welcomeTitle}>Ласкаво просимо до CraftNova!</h3>
           <p className={css.welcomeText}>
-            Ваш акаунт успішно створено. Тут буде розміщено основний контент додатку.
+            Ваш акаунт успішно створено. Тут буде розміщено основний контент
+            додатку.
           </p>
         </div>
       </div>
