@@ -6,7 +6,7 @@ import ModelController from "../../components/auth/ModelController/ModelControll
 
 export default function AuthPage() {
   const location = useLocation();
-  const isLoginPage = location.pathname === "/auth/login";
+  const isLoginPage = location.pathname.includes("/auth/login");
 
   return (
     <div className={css.container}>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
-// const API_URL = 'https://primatrix.onrender.com/api';
+// const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://triplegeneralapi.onrender.com/api';
 
 const apiClient = axios.create({
     baseURL: API_URL,
