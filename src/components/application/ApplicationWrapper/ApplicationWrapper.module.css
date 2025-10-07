@@ -4,12 +4,13 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 10px;
+  gap: 20px;
 }
 
-.head {
+.header {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
 }
 
@@ -20,8 +21,10 @@
 }
 
 .headerSvgContainer {
-  width: 48%;
+  width: 50%;
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .title {
@@ -29,12 +32,9 @@
   color: #cfb293;
   font-weight: 400;
   line-height: 100%;
-  width: 40%;
-  max-width: 400px;
-  margin-left: 10%;
-
   font-size: 48px;
-  margin-bottom: -12px;
+  margin-bottom: -10px;
+  text-align: center;
   font-family: "Minecraft", sans-serif;
 }
 
@@ -42,7 +42,7 @@
   position: relative;
   width: 100%;
   height: max-content;
-  padding: 8% 0;
+  padding: 6% 0;
   z-index: 1;
 }
 
@@ -82,97 +82,104 @@
   .title {
     font-size: 44px;
   }
+  .container {
+    padding: 35px 0;
+  }
   .headerSvgContainer {
-    width: 50%;
+    width: 62%;
   }
 }
 
 @media screen and (max-width: 1200px) {
   .title {
     font-size: 40px;
-    width: 45%;
+  }
+  .container {
+    padding: 30px 0;
   }
   .headerSvgContainer {
-    width: 52%;
+    width: 65%;
   }
 }
 
 @media screen and (max-width: 1024px) {
   .title {
     font-size: 36px;
-    width: 50%;
+  }
+  .container {
+    padding: 25px 0;
   }
   .headerSvgContainer {
-    width: 55%;
+    width: 68%;
   }
 }
 
 @media screen and (max-width: 900px) {
   .title {
     font-size: 32px;
-    width: 55%;
+  }
+  .container {
+    padding: 20px 0;
   }
   .headerSvgContainer {
-    width: 60%;
+    width: 70%;
   }
 }
 
 @media screen and (max-width: 768px) {
   .title {
     font-size: 28px;
-    width: 60%;
-  }
-  .headerSvgContainer {
-    width: 65%;
   }
   .container {
-    gap: 8px;
+    gap: 15px;
+    padding: 15px 0;
+  }
+  .headerSvgContainer {
+    width: 75%;
   }
 }
 
 @media screen and (max-width: 560px) {
   .title {
     font-size: 24px;
-    width: 70%;
-  }
-  .headerSvgContainer {
-    width: 70%;
   }
   .container {
-    gap: 6px;
+    gap: 12px;
+    padding: 10px 0;
+  }
+  .headerSvgContainer {
+    width: 80%;
   }
 }
 
 @media screen and (max-width: 425px) {
   .title {
     font-size: 22px;
-    width: 80%;
-  }
-  .headerSvgContainer {
-    width: 75%;
   }
   .container {
-    gap: 4px;
+    gap: 8px;
+    padding: 8px 0;
+  }
+  .headerSvgContainer {
+    width: 85%;
   }
 }
 
 @media screen and (max-width: 375px) {
   .title {
     font-size: 20px;
-    width: 85%;
   }
   .headerSvgContainer {
-    width: 80%;
+    width: 88%;
   }
 }
 
 @media screen and (max-width: 350px) {
   .title {
     font-size: 18px;
-    width: 90%;
   }
   .headerSvgContainer {
-    width: 85%;
+    width: 90%;
   }
 }
 
@@ -181,10 +188,11 @@
     font-size: 20px;
   }
   .container {
-    gap: 4px;
+    gap: 8px;
+    padding: 5px 0;
   }
   .headerSvgContainer {
-    width: 60%;
+    width: 70%;
   }
 }
 
@@ -193,6 +201,6 @@
     font-size: 28px;
   }
   .headerSvgContainer {
-    width: 50%;
+    width: 65%;
   }
 }

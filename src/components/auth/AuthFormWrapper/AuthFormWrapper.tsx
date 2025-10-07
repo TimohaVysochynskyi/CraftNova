@@ -1,7 +1,7 @@
 import css from "./AuthFormWrapper.module.css";
 import LoginForm from "../AuthForm/LoginForm";
 import RegisterForm from "../AuthForm/RegisterForm";
-import AdaptiveSVGBackground from "../AdaptiveSVGBackground/AdaptiveSVGBackground";
+import AdaptiveSVGBackground from "../../shared/AdaptiveSVGBackground/AdaptiveSVGBackground";
 import AdaptiveHeaderSVG from "../AdaptiveHeaderSVG/AdaptiveHeaderSVG";
 import { useContainerDimensions } from "../../../hooks/useContainerDimensions";
 

@@ -4,8 +4,12 @@ export interface User {
     name: string;
     surname: string;
     balance?: number;
+    passportValid?: boolean;
+    photo?: string;
     lastOnline?: string;
     isOnline?: boolean;
+    banned?: boolean;
+    isAdmin?: boolean;
 }
 
 export interface AuthTokens {

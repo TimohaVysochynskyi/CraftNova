@@ -13,6 +13,59 @@
   border-bottom: 2px solid #cfb293;
 }
 
+.verificationBanner {
+  width: 100%;
+  padding: 20px 30px;
+  margin-bottom: 30px;
+  border: 2px solid;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.verificationBanner.notStarted {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-color: #f59e0b;
+}
+
+.verificationBanner.pending {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+}
+
+.verificationBanner.rejected {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+}
+
+.bannerText {
+  color: #cfb293;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  flex: 1;
+}
+
+.bannerButton {
+  background-color: #4d3e2b;
+  border: 2px solid #cfb293;
+  padding: 10px 20px;
+  color: #d9d9d9;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.bannerButton:hover {
+  background-color: #5a4a37;
+  color: #fff;
+}
+
 .title {
   color: #cfb293;
   font-size: 36px;
@@ -99,6 +152,11 @@
   color: #f87171 !important;
 }
 
+.verified {
+  color: #4ade80 !important;
+  font-weight: 600;
+}
+
 .welcomeText {
   color: #d9d9d9;
   font-size: 16px;
@@ -132,6 +190,20 @@
     text-align: center;
   }
 
+  .verificationBanner {
+    flex-direction: column;
+    padding: 15px 20px;
+    text-align: center;
+  }
+
+  .bannerText {
+    font-size: 14px;
+  }
+
+  .bannerButton {
+    width: 100%;
+  }
+
   .title {
     font-size: 28px;
   }
@@ -151,6 +223,19 @@
 @media screen and (max-width: 425px) {
   .container {
     padding: 15px;
+  }
+
+  .verificationBanner {
+    padding: 12px 15px;
+  }
+
+  .bannerText {
+    font-size: 13px;
+  }
+
+  .bannerButton {
+    padding: 8px 16px;
+    font-size: 12px;
   }
 
   .title {
