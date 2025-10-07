@@ -12,8 +12,8 @@ export default function ApplicationModal({
   isOpen,
   onClose,
   onPhotoCapture,
-  onPhotoConfirm,
-}: ApplicationModalProps) {
+}: // onPhotoConfirm,
+ApplicationModalProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);

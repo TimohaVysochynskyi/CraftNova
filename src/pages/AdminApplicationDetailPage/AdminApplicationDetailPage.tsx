@@ -39,7 +39,7 @@ export default function AdminApplicationDetailPage() {
           status: newStatus,
         })
       ).then((result) => {
-        if (result.meta.requestStatus === 'fulfilled') {
+        if (result.meta.requestStatus === "fulfilled") {
           // Перезавантажуємо дані після успішної зміни статусу
           dispatch(fetchApplicationById(id!));
         }
@@ -56,7 +56,7 @@ export default function AdminApplicationDetailPage() {
           rejectionReason: rejectionReason.trim(),
         })
       ).then((result) => {
-        if (result.meta.requestStatus === 'fulfilled') {
+        if (result.meta.requestStatus === "fulfilled") {
           setShowRejectModal(false);
           setRejectionReason("");
           // Перезавантажуємо дані після успішної зміни статусу
@@ -69,7 +69,7 @@ export default function AdminApplicationDetailPage() {
   const handleDelete = () => {
     if (window.confirm("Ви впевнені, що хочете видалити цю заявку?")) {
       dispatch(deleteApplicationById(id!)).then((result) => {
-        if (result.meta.requestStatus === 'fulfilled') {
+        if (result.meta.requestStatus === "fulfilled") {
           toast.success("Заявку видалено");
           navigate("/admin/applications");
         }
