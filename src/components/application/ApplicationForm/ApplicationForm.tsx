@@ -60,7 +60,7 @@ export default function ApplicationForm() {
       .required("Серія паспорту обов'язкова"),
     passportNumber: Yup.string()
       .trim()
-      .max(9, "Номер паспорту не може містити більше 9 цифр")
+      .length(9, "Номер паспорту має містити рівно 9 цифр")
       .required("Номер паспорту обов'язковий"),
     issuingAuthority: Yup.string()
       .trim()
