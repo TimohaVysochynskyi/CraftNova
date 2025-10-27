@@ -40,4 +40,21 @@ export const authApi = {
     logout: async (): Promise<void> => {
         await apiClient.post('/auth/logout');
     },
+
+    updateProfilePhoto: async (file: File): Promise<User> => {
+        const formData = new FormData();
+        formData.append('photo', file);
+
+        const response = await apiClient.patch<ApiResponse<User>>(
+            '/auth/profile/photo',
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        );
+
+        return response.data.data;
+    },
 };

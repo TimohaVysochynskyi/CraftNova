@@ -1,15 +1,18 @@
 export interface User {
+    id?: number;
     username: string;
     email: string;
     name: string;
     surname: string;
     balance?: number;
-    passportValid?: boolean;
+    level?: number;
+    gamePoints?: number;
+    passportValid?: boolean | number;
     photo?: string;
     lastOnline?: string;
-    isOnline?: boolean;
-    banned?: boolean;
-    isAdmin?: boolean;
+    isOnline?: boolean | number;
+    banned?: boolean | number;
+    isAdmin?: boolean | number;
 }
 
 export interface AuthTokens {
@@ -51,5 +54,7 @@ export interface AuthState {
     refreshToken: string | null;
     isAuthenticated: boolean;
     isLoading: boolean;
+    isUpdatingPhoto: boolean;
+    profilePhotoVersion: number;
     error: string | null;
 }

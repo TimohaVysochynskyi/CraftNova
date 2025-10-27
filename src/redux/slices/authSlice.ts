@@ -5,6 +5,7 @@ import type {
     AuthState,
     LoginCredentials,
     RegisterCredentials,
+    User,
 } from '../../types/auth.types';
 
 // Helper function to extract user-friendly error message
@@ -91,6 +92,22 @@ export const logoutUser = createAsyncThunk(
     }
 );
 
+export const updateProfilePhoto = createAsyncThunk(
+    'auth/updateProfilePhoto',
+    async (file: File, { rejectWithValue }) => {
+        try {
+            await authApi.updateProfilePhoto(file);
+            const user = await authApi.getCurrentUser();
+            toast.success('Фото профілю оновлено!');
+            return user;
+        } catch (error) {
+            const errorMessage = getErrorMessage(error);
+            toast.error(errorMessage);
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
+
 // Initial state
 const initialState: AuthState = {
     user: null,
@@ -98,6 +115,8 @@ const initialState: AuthState = {
     refreshToken: null,
     isAuthenticated: false,
     isLoading: false,
+    isUpdatingPhoto: false,
+    profilePhotoVersion: 0,
     error: null,
 };
 
@@ -114,6 +133,7 @@ const authSlice = createSlice({
             state.accessToken = null;
             state.refreshToken = null;
             state.isAuthenticated = false;
+            state.profilePhotoVersion = 0;
             state.error = null;
         },
     },
@@ -193,7 +213,30 @@ const authSlice = createSlice({
             state.refreshToken = null;
             state.isAuthenticated = false;
             state.error = null;
+            state.isUpdatingPhoto = false;
+            state.profilePhotoVersion = 0;
         });
+
+        // Update profile photo
+        builder
+            .addCase(updateProfilePhoto.pending, (state) => {
+                state.isUpdatingPhoto = true;
+                state.error = null;
+            })
+            .addCase(updateProfilePhoto.fulfilled, (state, action) => {
+                state.isUpdatingPhoto = false;
+                state.error = null;
+                if (state.user) {
+                    state.user = { ...state.user, ...action.payload } as User;
+                } else {
+                    state.user = action.payload;
+                }
+                state.profilePhotoVersion = Date.now();
+            })
+            .addCase(updateProfilePhoto.rejected, (state, action) => {
+                state.isUpdatingPhoto = false;
+                state.error = action.payload as string;
+            });
     },
 });
 

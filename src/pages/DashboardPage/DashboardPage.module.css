@@ -1,260 +1,151 @@
-.container {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
-  padding: 40px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #cfb293;
-}
-
-.verificationBanner {
+.background {
   width: 100%;
-  padding: 20px 30px;
-  margin-bottom: 30px;
-  border: 2px solid;
-  border-radius: 4px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  object-fit: cover;
+  object-position: center;
+}
+.bgBlur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  backdrop-filter: blur(8px);
+}
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 64px;
+}
+.verifyWrapper {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  background-color: rgba(77, 62, 43, 0.34);
+  border: 2px solid rgba(207, 178, 147, 1);
+  position: relative;
+  padding: 12px 32px;
+  z-index: 0;
 }
-
-.verificationBanner.notStarted {
-  background-color: rgba(245, 158, 11, 0.1);
-  border-color: #f59e0b;
+.verifyText {
+  font-size: 32px;
+  line-height: 28px;
+  color: rgba(207, 178, 147, 1);
+  font-weight: 700;
 }
-
-.verificationBanner.pending {
-  background-color: rgba(59, 130, 246, 0.1);
-  border-color: #3b82f6;
-}
-
-.verificationBanner.rejected {
-  background-color: rgba(239, 68, 68, 0.1);
-  border-color: #ef4444;
-}
-
-.bannerText {
-  color: #cfb293;
-  font-size: 16px;
-  font-weight: 500;
-  margin: 0;
-  flex: 1;
-}
-
-.bannerButton {
-  background-color: #4d3e2b;
-  border: 2px solid #cfb293;
+.verifyButton {
   padding: 10px 20px;
-  color: #d9d9d9;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.bannerButton:hover {
-  background-color: #5a4a37;
-  color: #fff;
-}
-
-.title {
-  color: #cfb293;
-  font-size: 36px;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.logoutButton {
+  border: 2px solid rgba(207, 178, 147, 1);
   background-color: #4d3e2b;
-  border: 2px solid #cfb293;
-  padding: 12px 24px;
   color: #d9d9d9;
-  font-size: 16px;
   font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
+  font-size: 20px;
 }
-
-.logoutButton:hover {
-  background-color: #5a4a37;
-  color: #fff;
-}
-
 .content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  max-width: 1200px;
-}
-
-.userCard,
-.welcomeCard {
-  background-color: rgba(39, 32, 22, 0.8);
-  border: 2px solid #cfb293;
-  padding: 30px;
-}
-
-.userTitle,
-.welcomeTitle {
-  color: #cfb293;
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0 0 20px 0;
-  text-transform: uppercase;
-}
-
-.userInfo {
+  width: 100%;
+  height: fit-content;
+  max-width: 1650px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
 }
-
-.userField {
+.main {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(207, 178, 147, 0.3);
+  gap: 32px;
+  max-width: inherit;
+  max-height: 800px;
+}
+.block {
+  background-color: rgba(77, 62, 43, 0.34);
+  backdrop-filter: blur(38.5px);
+  border: 2px solid rgba(207, 178, 147, 1);
+  max-height: inherit;
+  width: 100%;
+}
+.block:first-child {
+  width: 35%;
+}
+.block:last-child {
+  width: calc(65% - 32px);
 }
 
-.userField:last-child {
-  border-bottom: none;
-}
-
-.fieldLabel {
-  color: #cfb293;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.fieldValue {
-  color: #fff;
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.online {
-  color: #4ade80 !important;
-}
-
-.offline {
-  color: #f87171 !important;
-}
-
-.verified {
-  color: #4ade80 !important;
-  font-weight: 600;
-}
-
-.welcomeText {
-  color: #d9d9d9;
-  font-size: 16px;
-  line-height: 1.6;
-  margin: 0;
-}
-
-@media screen and (max-width: 1024px) {
-  .container {
-    padding: 30px;
+@media screen and (max-width: 1200px) {
+  .main {
+    gap: 24px;
   }
-
-  .content {
-    grid-template-columns: 1fr;
-    gap: 30px;
+  .block:last-child {
+    width: calc(65% - 24px);
   }
+  .verifyText {
+    font-size: 26px;
+  }
+  .verifyButton {
+    padding: 8px 16px;
+  }
+}
 
-  .title {
-    font-size: 32px;
+@media screen and (max-width: 900px) {
+  .main {
+    flex-direction: column;
+    max-height: none;
+    height: auto;
+    width: 100%;
+  }
+  .verifyWrapper {
+    padding: 10px 24px;
+  }
+  .verifyText {
+    font-size: 22px;
+  }
+  .verifyButton {
+    font-size: 18px;
+    padding: 8px 16px;
+  }
+  .block {
+    width: 100% !important;
   }
 }
 
 @media screen and (max-width: 768px) {
   .container {
-    padding: 20px;
+    padding: 40px;
   }
-
-  .header {
+  .verifyWrapper {
     flex-direction: column;
-    gap: 20px;
     text-align: center;
-  }
-
-  .verificationBanner {
-    flex-direction: column;
-    padding: 15px 20px;
-    text-align: center;
-  }
-
-  .bannerText {
-    font-size: 14px;
-  }
-
-  .bannerButton {
-    width: 100%;
-  }
-
-  .title {
-    font-size: 28px;
-  }
-
-  .userCard,
-  .welcomeCard {
-    padding: 20px;
-  }
-
-  .userField {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+    gap: 16px;
   }
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 450px) {
   .container {
-    padding: 15px;
+    padding: 16px;
   }
-
-  .verificationBanner {
-    padding: 12px 15px;
-  }
-
-  .bannerText {
-    font-size: 13px;
-  }
-
-  .bannerButton {
+  .verifyWrapper {
     padding: 8px 16px;
-    font-size: 12px;
   }
-
-  .title {
-    font-size: 24px;
-  }
-
-  .logoutButton {
-    padding: 10px 20px;
-    font-size: 14px;
-  }
-
-  .userTitle,
-  .welcomeTitle {
+  .verifyText {
     font-size: 20px;
   }
+}
 
-  .fieldLabel,
-  .fieldValue,
-  .welcomeText {
-    font-size: 14px;
+@media screen and (min-width: 900px) and (min-height: 1024px) {
+  .main {
+    flex-direction: column;
+    max-height: none;
+    height: auto;
+    width: 100%;
+  }
+  .block {
+    width: 100% !important;
   }
 }

@@ -1,7 +1,9 @@
+import { useCallback, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import AvatarWrapper from "../../components/dashboard/AvatarWrapper/AvatarWrapper";
+import InfoWrapper from "../../components/dashboard/InfoWrapper/InfoWrapper";
 import { useAppDispatch, useAppSelector, useUser } from "../../redux/hooks";
-import { logoutUser } from "../../redux/slices/authSlice";
+import { logoutUser, updateProfilePhoto } from "../../redux/slices/authSlice";
 import { getMyApplication } from "../../redux/slices/applicationSlice";
 import css from "./DashboardPage.module.css";
 
@@ -12,152 +14,157 @@ export default function DashboardPage() {
   const { application, isLoading } = useAppSelector(
     (state) => state.application
   );
+  const { isUpdatingPhoto, profilePhotoVersion } = useAppSelector(
+    (state) => state.auth
+  );
+
+  const shouldFetchApplication = Boolean(user);
 
   useEffect(() => {
-    // Завантажуємо анкету при завантаженні сторінки
+    if (!shouldFetchApplication) {
+      return;
+    }
     dispatch(getMyApplication());
-  }, [dispatch]);
+  }, [dispatch, shouldFetchApplication]);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await dispatch(logoutUser());
     navigate("/auth/login");
-  };
+  }, [dispatch, navigate]);
+
+  const handleOpenApplication = useCallback(() => {
+    navigate("/application");
+  }, [navigate]);
+
+  const handleOpenAdmin = useCallback(() => {
+    navigate("/admin/applications");
+  }, [navigate]);
+
+  const handleAvatarChange = useCallback(
+    (file: File) => {
+      if (file) {
+        dispatch(updateProfilePhoto(file));
+      }
+    },
+    [dispatch]
+  );
+
+  const avatarLevelLabel = useMemo(() => {
+    if (!user || typeof user.level !== "number") {
+      return undefined;
+    }
+    return `${user.level} lvl`;
+  }, [user]);
+
+  const displayName = useMemo(() => {
+    if (!user) {
+      return "";
+    }
+    const name = [user.name, user.surname].filter(Boolean).join(" ").trim();
+    return name.length > 0 ? name : user.username;
+  }, [user]);
 
   if (!user) {
     return null;
   }
 
-  // Визначаємо чи показувати блок верифікації
-  const showVerificationBanner = !user.passportValid;
-  const isApplicationPending = application?.status === "pending";
-  const isApplicationRejected = application?.status === "rejected";
+  const isAdmin = Boolean(user.isAdmin);
+  const isApproved = application?.status === "approved";
+  const isPending = application?.status === "pending";
+  const isRejected = application?.status === "rejected";
+  const isVerified = Boolean(user.passportValid || isApproved);
+
+  const banner = useMemo(() => {
+    if (isLoading) {
+      return {
+        text: "Перевіряємо статус анкети...",
+        buttonLabel: undefined,
+      } as const;
+    }
+
+    if (isVerified) {
+      return null;
+    }
+
+    if (isPending) {
+      return null;
+    }
+
+    if (isRejected) {
+      const reason = application?.rejectionReason?.trim();
+      const text =
+        reason && reason.length > 0
+          ? `Анкета відхилена: ${reason}`
+          : "Анкета відхилена";
+      return {
+        text,
+        buttonLabel: "Подати знову",
+        buttonAction: handleOpenApplication,
+      } as const;
+    }
+
+    return {
+      text: "Верифікація не пройдена",
+      buttonLabel: "Заповнити анкету",
+      buttonAction: handleOpenApplication,
+    } as const;
+  }, [
+    application?.rejectionReason,
+    handleOpenApplication,
+    isLoading,
+    isPending,
+    isRejected,
+    isVerified,
+  ]);
 
   return (
-    <div className={css.container}>
-      <div className={css.header}>
-        <h1 className={css.title}>Дашборд</h1>
-        <div style={{ display: "flex", gap: "10px" }}>
-          {user.isAdmin && (
-            <button
-              onClick={() => navigate("/admin/applications")}
-              className={css.logoutButton}
-              style={{ background: "#2563eb" }}
-            >
-              Адмін-панель
-            </button>
+    <>
+      <img
+        src="/images/dashboard-bg.webp"
+        alt="Background"
+        className={css.background}
+      />
+      <div className={css.bgBlur}></div>
+      <div className={css.container}>
+        <div className={css.content}>
+          {banner && (
+            <div className={css.verifyWrapper}>
+              <p className={css.verifyText}>{banner.text}</p>
+              {banner.buttonLabel && banner.buttonAction ? (
+                <button
+                  type="button"
+                  className={css.verifyButton}
+                  onClick={banner.buttonAction}
+                >
+                  {banner.buttonLabel}
+                </button>
+              ) : null}
+            </div>
           )}
-          <button onClick={handleLogout} className={css.logoutButton}>
-            Вийти
-          </button>
-        </div>
-      </div>
-
-      {/* Блок верифікації */}
-      {showVerificationBanner && (
-        <div
-          className={`${css.verificationBanner} ${
-            isApplicationRejected
-              ? css.rejected
-              : isApplicationPending
-              ? css.pending
-              : css.notStarted
-          }`}
-        >
-          {isLoading ? (
-            <p className={css.bannerText}>Завантаження...</p>
-          ) : isApplicationPending ? (
-            <>
-              <p className={css.bannerText}>
-                ⏳ Ваша анкета на розгляді. Очікуйте підтвердження від
-                адміністрації.
-              </p>
-            </>
-          ) : isApplicationRejected ? (
-            <>
-              <p className={css.bannerText}>
-                ❌ Вашу анкету відхилено
-                {application?.rejectionReason &&
-                  `: ${application.rejectionReason}`}
-              </p>
-              <button
-                onClick={() => navigate("/application")}
-                className={css.bannerButton}
-              >
-                Подати знову
-              </button>
-            </>
-          ) : (
-            <>
-              <p className={css.bannerText}>
-                ⚠️ Ваш акаунт не верифіковано. Заповніть анкету для верифікації
-                паспортних даних.
-              </p>
-              <button
-                onClick={() => navigate("/application")}
-                className={css.bannerButton}
-              >
-                Заповнити анкету
-              </button>
-            </>
-          )}
-        </div>
-      )}
-
-      <div className={css.content}>
-        <div className={css.userCard}>
-          <h2 className={css.userTitle}>Інформація про користувача</h2>
-          <div className={css.userInfo}>
-            <div className={css.userField}>
-              <span className={css.fieldLabel}>Нікнейм:</span>
-              <span className={css.fieldValue}>{user.username}</span>
+          <div className={css.main}>
+            <div className={`${css.block} ${css.avatarWrapper}`}>
+              <AvatarWrapper
+                username={displayName}
+                avatarUrl={user.photo}
+                isOnline={user.isOnline}
+                levelLabel={avatarLevelLabel}
+                isUploading={isUpdatingPhoto}
+                photoVersion={profilePhotoVersion}
+                onEditAvatar={handleAvatarChange}
+              />
             </div>
-            <div className={css.userField}>
-              <span className={css.fieldLabel}>Email:</span>
-              <span className={css.fieldValue}>{user.email}</span>
-            </div>
-            <div className={css.userField}>
-              <span className={css.fieldLabel}>Ім'я:</span>
-              <span className={css.fieldValue}>{user.name}</span>
-            </div>
-            <div className={css.userField}>
-              <span className={css.fieldLabel}>Прізвище:</span>
-              <span className={css.fieldValue}>{user.surname}</span>
-            </div>
-            {user.passportValid && (
-              <div className={css.userField}>
-                <span className={css.fieldLabel}>Верифікація:</span>
-                <span className={`${css.fieldValue} ${css.verified}`}>
-                  ✓ Паспорт верифіковано
-                </span>
-              </div>
-            )}
-            {user.balance !== undefined && (
-              <div className={css.userField}>
-                <span className={css.fieldLabel}>Баланс:</span>
-                <span className={css.fieldValue}>{user.balance} грн</span>
-              </div>
-            )}
-            <div className={css.userField}>
-              <span className={css.fieldLabel}>Статус:</span>
-              <span
-                className={`${css.fieldValue} ${
-                  user.isOnline ? css.online : css.offline
-                }`}
-              >
-                {user.isOnline ? "В мережі" : "Не в мережі"}
-              </span>
+            <div className={`${css.block} ${css.infoWrapper}`}>
+              <InfoWrapper
+                user={user}
+                application={application}
+                isApplicationLoading={isLoading}
+                onLogout={handleLogout}
+                onOpenAdmin={isAdmin ? handleOpenAdmin : undefined}
+              />
             </div>
           </div>
         </div>
-
-        <div className={css.welcomeCard}>
-          <h3 className={css.welcomeTitle}>Ласкаво просимо до CraftNova!</h3>
-          <p className={css.welcomeText}>
-            Ваш акаунт успішно створено. Тут буде розміщено основний контент
-            додатку.
-          </p>
-        </div>
       </div>
-    </div>
+    </>
   );
 }
